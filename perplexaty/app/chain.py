@@ -52,10 +52,12 @@ prompt = ChatPromptTemplate.from_messages([
     ("human", human_template)
 ])
 
-chain = RunnableParallel({
-    "query": RunnablePassthrough(),
-    "context": retrieval_chain,
-}) | prompt | ChatOpenAI()
+chain = (
+        RunnableParallel({
+            "query": RunnablePassthrough(),
+            "context": retrieval_chain,
+        }) | prompt | ChatOpenAI()
+).with_types(input_type = str)
 
 if __name__ == "__main__":
     print(chain.invoke("Best time to visit Japan"))
